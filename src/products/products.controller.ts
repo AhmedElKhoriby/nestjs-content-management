@@ -9,8 +9,9 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import type { CreateProductDto } from './dtos/create-product.dto';
-import type { UpdateProductDto } from './dtos/update-product.dto';
+
+import { CreateProductDto } from './dtos/create-product.dto';
+import { UpdateProductDto } from './dtos/update-product.dto';
 
 type ProductType = { id: number; name: string; price: number };
 

@@ -1,13 +1,13 @@
+import { IsNotEmpty, IsNumber, IsString, Length, Min } from 'class-validator';
+
 export class CreateProductDto {
+  @IsString({ message: 'Name must be a string, this is a custom message' })
+  @IsNotEmpty()
+  @Length(2, 150) // instead of @MaxLength(100) and @MinLength(3)
   name: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(0, { message: 'Price shoud not be less than zero' })
   price: number;
 }
-
-/*
-  class (not interface or type) ?
-
-  - because we want to use the class-transformer and class-validator decorators
-  to validate the incoming data in the DTO class
-  - class-transformer is used to transform the incoming data into a class instance
-  - class-validator is used to validate the incoming data against the class properties
-*/
