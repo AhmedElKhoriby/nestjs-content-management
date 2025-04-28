@@ -7,7 +7,11 @@ import {
   NotFoundException,
   Put,
   Delete,
+  Req,
+  Res,
+  Headers,
 } from '@nestjs/common';
+import type { Request, Response } from 'express';
 import type { CreateProductDto } from './dtos/create-product.dto';
 import type { UpdateProductDto } from './dtos/update-product.dto';
 
@@ -20,6 +24,42 @@ export class ProductsController {
     { id: 2, name: 'Product 2', price: 200 },
     { id: 3, name: 'Product 3', price: 300 },
   ];
+
+  // What happens behind the scenes with express?
+  // POST: ~/api/products/express-style
+  @Post('/express-style')
+  public createNewProductExpressStyle(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+    // passthrough: true => allows us to modify the response object
+    @Headers() headers: any,
+  ) {
+    const newProduct: ProductType = {
+      id: this.products.length + 1,
+      name: req.body.title,
+      price: req.body.price,
+    };
+
+    this.products.push(newProduct);
+
+    console.log('headers', headers); // prefered
+    console.log('headers', req.headers);
+
+    // NestJS gives us the ability to use express-style responses
+    // But we should avoid using it in NestJS
+    // because it goes against the NestJS way of doing things
+    // and it makes the code less readable and maintainable
+
+    // But it has its own use cases like
+    // res.cookie('cookie-name', 'cookie-value', {
+    //   httpOnly: true,
+    //   maxAge: 900000,
+    // });
+    // So we can use it to set cookies, headers, etc. headers: any,
+    // But we should avoid using it in most cases
+
+    res.status(201).json(newProduct);
+  }
 
   // POST: ~/api/products
   @Post()
