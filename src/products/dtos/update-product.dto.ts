@@ -1,4 +1,4 @@
 export class UpdateProductDto {
-  title?: string;
+  name?: string;
   price?: number;
 }

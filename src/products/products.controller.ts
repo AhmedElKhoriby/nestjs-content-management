@@ -27,7 +27,7 @@ export class ProductsController {
   public createNewProduct(@Body() body: CreateProductDto) {
     const newProduct: ProductType = {
       id: this.products.length + 1,
-      name: body.title,
+      name: body.name,
       price: body.price,
     };
 
