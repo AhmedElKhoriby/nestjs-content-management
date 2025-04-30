@@ -5,6 +5,7 @@ import {
   Length,
   Min,
   IsOptional,
+  MinLength,
 } from 'class-validator';
 
 export class UpdateProductDto {
@@ -16,6 +17,7 @@ export class UpdateProductDto {
 
   @IsString()
   @IsOptional()
+  @MinLength(5, { message: 'Description should be at least 5 characters long' })
   description?: string;
 
   @IsNumber()

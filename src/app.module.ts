@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config'; // use dotenv to load environment variables internally
 import { ProductsModule } from './products/products.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
@@ -10,19 +10,24 @@ import { Product } from './products/product.entity';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, // Makes ConfigModule available everywhere
+      envFilePath: `.env.${process.env.NODE_ENV}`, // Path to your .env file
     }),
     ProductsModule,
     ReviewsModule,
     UsersModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      username: 'postgres',
-      database: 'nestjs-app-db',
-      password: process.env.DB_PASSWORD,
-      port: 5432,
-      host: 'localhost',
-      synchronize: true, // only in development
-      entities: [Product],
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        database: configService.get<string>('DB_NAME'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        port: configService.get<number>('DB_PORT'),
+        host: configService.get('DB_HOST'),
+        synchronize: process.env.NODE_ENV !== 'production', // Synchronize only in development
+        entities: [Product],
+        // entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      }),
     }),
   ],
 })
