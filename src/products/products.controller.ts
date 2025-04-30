@@ -15,8 +15,13 @@ import { ProductService } from './products.service';
 
 @Controller('/api/products')
 export class ProductsController {
-  //! @IMPORTANT NOTE: this considered as bad practice, we will fix it in the next commit
-  private productService: ProductService = new ProductService();
+  // private readonly productService: ProductService;
+
+  // constructor(productService: ProductService) {
+  //   this.productService = productService;
+  // }
+
+  constructor(private readonly productService: ProductService) {}
 
   // POST: ~/api/products
   @Post()

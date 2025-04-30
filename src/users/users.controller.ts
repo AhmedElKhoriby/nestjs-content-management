@@ -1,13 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { ReviewsService } from 'src/reviews/reviews.service';
 
 @Controller()
 export class UsersController {
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly reviewsService: ReviewsService, // Circular dependency
+  ) {}
+
   // GET: ~/api/users
   @Get('/api/users')
   public getAllUsers() {
-    return [
-      { id: 1, name: 'Ahmed', email: 'ahmed@gmail.com' },
-      { id: 2, name: 'Ali', email: 'ali@gmail.com' },
-    ];
+    return this.usersService.getAll();
   }
 }
