@@ -6,6 +6,9 @@ export class CreateProductDto {
   @Length(2, 150) // instead of @MaxLength(100) and @MinLength(3)
   name: string;
 
+  @IsString()
+  description: string;
+
   @IsNumber()
   @IsNotEmpty()
   @Min(0, { message: 'Price shoud not be less than zero' })

@@ -14,6 +14,10 @@ export class UpdateProductDto {
   @IsOptional()
   name?: string;
 
+  @IsString()
+  @IsOptional()
+  description?: string;
+
   @IsNumber()
   @IsNotEmpty()
   @Min(0, { message: 'Price shoud not be less than zero' })

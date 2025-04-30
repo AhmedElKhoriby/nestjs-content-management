@@ -7,6 +7,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
+  console.log(process.env.DB_PASSWORD);
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap().catch((err) => {
